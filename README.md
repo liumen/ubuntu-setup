@@ -1,7 +1,7 @@
 # Ubuntu Setup
-Bash scripts to automatically set up a ubuntu environment
+Bash scripts to automatically set up an ubuntu environment
 
 ## aptpkg.sh
-Perform apt upgrade
-Install tools and packages for routine development and system management
-Remove unnecessary packages
+- Perform apt upgrade
+- Install tools and packages for routine development and system management
+- Remove unnecessary packages
