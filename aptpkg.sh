@@ -1,6 +1,6 @@
 #!/bin/bash
 #WU,Qihang <wu.qihang@hotmail.com>#
-#Last modified: 13 Dec 2018 11:54:07 AM#
+#Last modified: 13 Dec 2018 01:31:00 PM#
 
 # ===============================================
 # FUNCTIONS
@@ -33,9 +33,11 @@ fail() {
 # ----------------------
 # commands
 instcmd='apt-get install -y'
+updcmd='apt-get update'
+rmcmd='apt-get purge -y'
+upgcmd='apt-get upgrade -y'
+autormcmd='apt-get autoremove -y'
 addrepo='add-apt-repository -y ppa:'
-aptupd='apt-get update'
-
 install_pkgs() {
     # provide an array of package names
     # and install these packages silently
@@ -43,7 +45,6 @@ install_pkgs() {
     for pkg in ${arr[@]}
     do
         info "Installing $pkg ..."
-
         # check if we need to add ppa key
         local ppakey=${pkgppa[$pkg]}
         if [ ! -z $ppakey ]
@@ -51,30 +52,43 @@ install_pkgs() {
             info "Adding ppa for $pkg from source $ppakey ..."
             $addrepo$ppakey >/dev/null 2>&1
             if [ $? -eq 0 ]
-            then 
-                $aptupd >/dev/null 2>&1
+            then
+                $updcmd >/dev/null 2>&1
                 success "Key $ppakey for $pkg successfully added"
             else
-                warn "Fail to add $ppakey for $pkg as a ppa key..."
+                warn "Fail to add $ppakey for $pkg as a ppa key!"
             fi
         fi
 
         # install package
         $instcmd $pkg > /dev/null
         if [ $? -eq 0 ]
-        then 
+        then
             success "$pkg successfully installed"
         else
-            warn "Installation for $pkg is not successful"
+            warn "Installation for $pkg failed!"
         fi
     done
+}
+
+rm_pkgs() {
+    arr=("$@")
+    for pkg in ${arr[@]}
+    do
+        which $pkg
+        if [ $? -eq 0 ]; then
+            info "Removing $pkg..."
+            $rmcmd $pkg 1 > /dev/null
+        fi
+    done
+    
 }
 
 
 # ===============================================
 # PARAMETERS
 # -----------------------------------------------
-# packages
+# packages to install
 pkg_compiler=(python python3 gcc g++ gfortran julia octave)
 pkg_devtools=(build-essential cscope ctags curl git paraview\
     ipython python-dev python-pip python3-dev python3-pip \
@@ -86,7 +100,8 @@ pkg_network=(aria2 geary)
 pkg_systools=(grub-customizer htop screenfetch lightdm-gtk-greeter-settings ppa-purge ubuntu-cleaner)
 pkg_utils=(indicator-weather xpad)
 
-pkg_classes=(pkg_compiler pkg_devtools pkg_document pkg_input pkg_media pkg_network pkg_systools pkg_utils)
+# packages to remove
+pkgrm=(firefox gnome-games-common gbrainy thunderbird)
 
 # packages that require ppa key
 declare -A pkgppa
@@ -110,7 +125,13 @@ then
     exit 1;
 fi
 
-# start installation process
+# upgrade
+color_print "Running upgrade for all packages..."
+$updcmd
+$upgcmd
+
+# installing packages
+color_print "Install user-defined packages..."
 install_pkgs "${pkg_compiler[@]}"
 install_pkgs "${pkg_devtools[@]}"
 install_pkgs "${pkg_document[@]}"
@@ -120,4 +141,9 @@ install_pkgs "${pkg_network[@]}"
 install_pkgs "${pkg_systools[@]}"
 install_pkgs "${pkg_utils[@]}"
 
-color_print "Package installation completed!"
+# removing some packages
+color_print "Removing default packages..."
+rm_pkgs "${pkgrm[@]}"
+$autormcmd
+
+color_print "Package configuration completed!"
