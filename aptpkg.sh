@@ -1,6 +1,6 @@
 #!/bin/bash
 #WU,Qihang <wu.qihang@hotmail.com>#
-#Last modified: 13 Dec 2018 01:31:00 PM#
+#Last modified: 24 Jan 2019 08:50:11 AM#
 
 # ===============================================
 # FUNCTIONS
@@ -93,12 +93,12 @@ pkg_compiler=(python python3 gcc g++ gfortran julia octave)
 pkg_devtools=(build-essential cscope ctags curl git paraview\
     ipython python-dev python-pip python3-dev python3-pip \
     tmux xsel valgrind vim vim-gtk)
-pkg_document=(okular texlive-full)
+pkg_document=(okular okular-extra-backends zathura xdotool texlive-full)
 pkg_input=(fcitx fcitx-googlepinyin im-config)
-pkg_media=(inkscape vlc)
+pkg_media=(inkscape pavucontrol vlc mpv)
 pkg_network=(aria2 geary)
 pkg_systools=(grub-customizer htop screenfetch lightdm-gtk-greeter-settings ppa-purge ubuntu-cleaner)
-pkg_utils=(indicator-weather xpad)
+pkg_utils=(go-for-it indicator-weather xpad)
 
 # packages to remove
 pkgrm=(firefox gnome-games-common gbrainy thunderbird)
@@ -106,11 +106,13 @@ pkgrm=(firefox gnome-games-common gbrainy thunderbird)
 # packages that require ppa key
 declare -A pkgppa
 pkgppa=( \
+    ["go-for-it"]="mank319/go-for-it" \
     ["grub-customizer"]="danielrichter2007/grub-customizer" \
     ["indicator-weather"]="kasra-mp/ubuntu-indicator-weather" \
     ["octave"]="octave/stable" \
     ["ubuntu-cleaner"]="gerardpuig/ppa" \
-    )
+    ["vim"]="jonathonf/vim"
+)
 
 # ===============================================
 # MAIN
