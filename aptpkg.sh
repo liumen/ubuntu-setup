@@ -1,6 +1,6 @@
 #!/bin/bash
 #WU,Qihang <wu.qihang@hotmail.com>#
-#Last modified: 24 Jan 2019 08:50:11 AM#
+#Last modified: 25 Jan 2019 01:02:52 PM#
 
 # ===============================================
 # FUNCTIONS
@@ -90,7 +90,7 @@ rm_pkgs() {
 # -----------------------------------------------
 # packages to install
 pkg_compiler=(python python3 gcc g++ gfortran julia octave)
-pkg_devtools=(build-essential cscope ctags curl git paraview\
+pkg_devtools=(ack-grep build-essential cscope ctags curl git paraview\
     ipython python-dev python-pip python3-dev python3-pip \
     tmux xsel valgrind vim vim-gtk)
 pkg_document=(okular okular-extra-backends zathura xdotool texlive-full)
